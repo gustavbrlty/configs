@@ -6,6 +6,12 @@ let
   my-x-scripts = import pkgs/scripts/x-session.nix { inherit pkgs; };
   sys-update = import pkgs/scripts/sys-update.nix { inherit pkgs; };
 
+  configs = "/etc/nixos/configs";
+
+  # Fonction raccourci pour lier un dossier ou un fichier
+  # %h sera remplacé par /home/gustav
+  link = name: "L+ %h/.config/${name} - - - - ${configs}/${name}";
+
 in {
 
   # We want the user to be able to use qemu.
@@ -82,6 +88,17 @@ in {
 
     pkgs.flameshot # To be able to take screenshots.
   
+  ];
+
+  # Mes configs.
+  systemd.user.tmpfiles.rules = [
+
+    # Ajouter le terminal.
+
+    (link "nvim")
+
+    # Ajouter firefox
+
   ];
 
   services.gnome-keyring.enable = true;
