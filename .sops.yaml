@@ -1,0 +1,10 @@
+keys:
+  - &admin_gustav age1q0j7l6ps7f54uajyg6ug0s7zpqlr0hlv75efewwa0cpy0at7ef0sac5apl
+  - &systeme_pc age18g4xmek76jrcr09vcuulkc2t5j9hfvyj50ur4tgjym2vsn7mldwqgm80zs
+
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+    - age:
+      - *admin_gustav
+      - *systeme_pc
