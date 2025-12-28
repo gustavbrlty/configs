@@ -252,7 +252,7 @@ in {
       x="start-my-x";
       off="sudo shutdown now"; # todo: demander une confirmation
       update="sys-update";
-      rebuild="sudo nixos-rebuild switch --flake /etc/nixos/#default && s";
+      rebuild="git -C /etc/nixos add . && sudo nixos-rebuild switch --flake /etc/nixos/#default && s";
       rb="rebuild";
 
       # We explictly put nvim instead of using the 'e' alias
