@@ -30,6 +30,10 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  systemd.tmpfiles.rules = [
+    "d /etc/nixos 0775 gustav users -"
+  ];
   
   nix.settings.experimental-features = ["nix-command" "flakes"];
 

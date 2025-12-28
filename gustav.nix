@@ -6,7 +6,7 @@ let
   my-x-scripts = import pkgs/scripts/x-session.nix { inherit pkgs; };
   sys-update = import pkgs/scripts/sys-update.nix { inherit pkgs; };
 
-  configs = "/etc/nixos/configs";
+  configs = "/etc/nixos/.config";
 
   # Fonction raccourci pour lier un dossier ou un fichier
   # %h sera remplacé par /home/gustav
@@ -42,7 +42,6 @@ in {
 
     # To be able to use GUI.
     pkgs.xorg.xinit
-    pkgs.gnome-terminal
     pkgs.xorg.twm
     pkgs.openbox # Windows manager.
     # obconf not that useful.
@@ -101,6 +100,20 @@ in {
 
   ];
 
+  # Configuration Gnome Terminal
+  programs.gnome-terminal = {
+    enable = true;
+    showMenubar = false;
+    profile = {
+      "6b5f181d-abf1-44db-acef-4eaffed165fc" = {
+        visibleName = "gustave-profile";
+        default = true;
+        font = "Monospace 11"; # Police taille 11
+        showScrollbar = false; 
+      };
+    };
+  };
+
   services.gnome-keyring.enable = true;
 
   # 2. Configuration de Firefox pour "voir" l'application Bitwarden
@@ -113,6 +126,57 @@ in {
     nativeMessagingHosts = [ 
       pkgs.bitwarden-desktop 
     ];
+
+    profiles.gustav = {
+  isDefault = true;
+
+  settings = {
+    "toolkit.legacyUserProfileCustomizations.stylesheets" = true; 
+    "browser.startup.homepage" = "about:blank";
+    "browser.newtabpage.enabled" = false;
+    "sidebar.verticalTabs" = true;
+  };
+
+  userChrome = ''
+    /* --- PARTIE 1 : MASQUER LES ÉLÉMENTS --- */
+    
+    /* Cache Firefox View ("View recent browsing") */
+    #firefox-view-button { display: none !important; }
+
+    /* Cache le bouton de Profil */
+    #fxa-toolbar-menu-button { display: none !important; }
+
+    /* Cache le "Nouvel onglet" (+) */
+    #tabs-newtab-button, #new-tab-button, .tabs-newtab-button { display: none !important; }
+
+    /* Cache le bouton "Show Sidebar" */
+    #sidebar-button { display: none !important; }
+
+
+    /* --- PARTIE 2 : RÉORDONNER LES ICÔNES (Extensions vs Onglets) --- */
+
+    /* On cible le conteneur principal de la barre d'outils */
+    #nav-bar-customization-target {
+        display: flex !important;
+    }
+
+    /* 1. On place l'icône "Lister tous les onglets" (le V) en premier */
+    #alltabs-button {
+        order: 1 !important;
+    }
+
+    /* 2. On place l'icône "Extensions" (le Puzzle) après */
+    #unified-extensions-button {
+        order: 2 !important;
+    }
+
+    /* 3. On force le menu principal (Hamburger) à rester tout à la fin */
+    #PanelUI-button {
+        order: 3 !important;
+    }
+  '';
+};
+
   };
 
   # Création manuelle du fichier de config ~/.config/libinput-gestures.conf
