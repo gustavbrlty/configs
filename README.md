@@ -8,6 +8,7 @@ Première étape, préparer l'installation:
 cd /etc/nixos
 sudo mv hardware-configuration.nix ~
 sudo mv configuration.nix ~
+sudo chown gustav:users /etc/nixos
 nix-shell -p git
 ```
 
