@@ -9,6 +9,7 @@ let
   configs = "/etc/nixos/.config";
 
   # Fonction raccourci pour lier un dossier ou un fichier
+  # (utile pour les fichiers de configuration)
   # %h sera remplacé par /home/gustav
   link = name: "L+ %h/.config/${name} - - - - ${configs}/${name}";
 
@@ -48,9 +49,9 @@ in {
     pkgs.libinput-gestures
     pkgs.sops
 
-    pkgs-unstable.bitwarden-cli
-    pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
-    pkgs.polkit_gnome # pour le debloquage par biometrie.
+    # pkgs-unstable.bitwarden-cli
+    # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
+    # pkgs.polkit_gnome # pour le debloquage par biometrie.
 
     # Ajoutez ces deux lignes :
     pkgs.arandr      # Interface graphique pour gérer les écrans (HDMI)
@@ -124,7 +125,7 @@ in {
     # C'est cette ligne magique qui fait le lien
     # entre Firefox et Bitwarden. 
     nativeMessagingHosts = [ 
-      pkgs.bitwarden-desktop 
+      pkgs.keepassxc 
     ];
 
     profiles.gustav = {
@@ -175,6 +176,27 @@ in {
         order: 3 !important;
     }
   '';
+
+extensions.packages = [
+      (pkgs.stdenv.mkDerivation {
+        name = "keepassxc-browser";
+        src = pkgs.fetchurl {
+          # URL de la version 1.9.11 (vérifiez si une version plus récente existe)
+          url = "https://addons.mozilla.org/firefox/downloads/file/4628286/keepassxc_browser-1.9.11.xpi";
+          # Le hash doit être correct. Si Nix râle, il vous donnera le bon hash à copier-coller.
+          sha256 = "sha256-vuUjrI2WjTauOuMXsSsbK76F4sb1ud2w+4IsLZCvYTk=";
+        };
+        # L'ID est crucial pour que Firefox reconnaisse l'extension
+        addonId = "keepassxc-browser@keepassxc.org";
+        
+        buildCommand = ''
+          dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+          mkdir -p "$dst"
+          install -v -m644 "$src" "$dst/$addonId.xpi"
+        '';
+      })
+    ];
+
 };
 
   };
@@ -322,7 +344,7 @@ in {
       # We explictly put nvim instead of using the 'e' alias
       # since the 'e' alias could theorically not support
       # the vim syntax used here if 'e' is not a vim like editor.
-      config="sudo nvim -p /etc/nixos/OS.nix /etc/nixos/gustav.nix -c \"tabnext 2\"";
+      config="nvim -p /etc/nixos/OS.nix /etc/nixos/gustav.nix -c \"tabnext 2\"";
       cnf="config";
 
       infos = "printf '\n**HEURE & DATE**:\n' && date && 
@@ -425,9 +447,9 @@ in {
         </action>
       </item>
     <separator/>
-      <item label="Bitwarden">
+      <item label="KeePassXC">
         <action name="Execute">
-          <command>${pkgs.bitwarden-desktop}/bin/bitwarden</command>
+          <command>${pkgs.keepassxc}/bin/keepassxc</command>
         </action>
       </item>
     <separator/>
@@ -514,10 +536,10 @@ in {
     </menu>
 
     <applications>
-      <application class="qutebrowser">
-        <decor>yes</decor>
-      </application>
       <application class="firefox">
+        <decor>no</decor>
+      </application>
+      <application class="KeePassXC">
         <decor>no</decor>
       </application>
       <application class="Qemu-system-x86_64">
@@ -679,6 +701,26 @@ in {
     </mouse>
 
     <keyboard>
+    <keybind key="A-Tab">
+      <action name="NextWindow">
+        <finalactions>
+          <action name="Focus"/>
+          <action name="Raise"/>
+          <action name="Unshade"/>
+        </finalactions>
+      </action>
+    </keybind>
+
+    <keybind key="A-S-Tab">
+      <action name="PreviousWindow">
+        <finalactions>
+          <action name="Focus"/>
+          <action name="Raise"/>
+          <action name="Unshade"/>
+        </finalactions>
+      </action>
+    </keybind>
+
       <keybind key="C-A-Left">
         <action name="GoToDesktop"><to>left</to></action>
       </keybind>

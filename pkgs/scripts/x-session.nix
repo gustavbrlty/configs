@@ -25,20 +25,24 @@ let
       export XDG_RUNTIME_DIR="/run/user/$USER_ID"
       echo ":: XDG_RUNTIME_DIR défini à $XDG_RUNTIME_DIR"
 
+      # On nettoie les anciens agents s'ils trainent (optionnel mais propre)
+      killall ssh-agent || true
+
+      # On démarre l'agent SSH officiel du système
+      # La commande 'eval' va exécuter les exports de variables (SSH_AUTH_SOCK, etc.)
+      eval "$(ssh-agent -s)"
+
       # 2. Démarrage des services
       echo ":: Lancement de gnome-keyring..."
       # On retire 'ssh' des composants pour ne pas qu'il prenne la main
       eval "$(gnome-keyring-daemon --start --components=secrets)"
-      
-      # On force explicitement le socket Bitwarden pour toute la session graphique
-      export SSH_AUTH_SOCK="/home/gustav/.bitwarden-ssh-agent.sock"
 
       # On fait un echo "" car la precedente commande
       # ne fait pas de retour a la ligne. 
       printf "\n"
 
-      echo ":: Lancement de Polkit..."
-      "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" &
+      # echo ":: Lancement de Polkit..."
+      # "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" &
       
       echo ":: Lancement de libinput-gestures..."
       libinput-gestures & 

@@ -10,6 +10,7 @@
       hardware/common.nix
       hardware/pc_HP.nix
       modules/network.nix
+      modules/password_manager.nix
       inputs.home-manager.nixosModules.default
     ];
 
@@ -55,7 +56,7 @@
     LC_TIME = "fr_FR.UTF-8";
   };
 
-  security.polkit.enable = true; 
+  # security.polkit.enable = true; 
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -157,7 +158,7 @@
     tree
 
     # necessaire pour polkit
-    bitwarden-desktop
+    # bitwarden-desktop
 
     /* Packages YubiKey complets
     yubikey-manager
