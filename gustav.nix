@@ -337,6 +337,7 @@ extensions.packages = [
       reset="reset && clear";
       x="start-my-x";
       off="sudo shutdown now"; # todo: demander une confirmation
+      lock="slock";
       update="sys-update";
       rebuild="git -C /etc/nixos add . && sudo nixos-rebuild switch --flake /etc/nixos/#default && s";
       rb="rebuild";
