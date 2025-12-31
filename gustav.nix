@@ -476,11 +476,29 @@ extensions.packages = [
         <action name="Restart"/>
       </item>
       <separator/>
-      <item label="Log Out">
+      <item label="Log out from X">
         <action name="Exit">
           <prompt>yes</prompt>
         </action>
       </item>
+      <separator/>
+      <item label="Verrouiller la session">
+        <action name="Execute">
+            <command>slock</command>
+        </action>
+    </item>
+
+    <item label="Redémarrer">
+        <action name="Execute">
+            <command>systemctl reboot</command>
+        </action>
+    </item>
+
+    <item label="Éteindre">
+        <action name="Execute">
+            <command>systemctl poweroff</command>
+        </action>
+    </item>
     </menu>
   </menu>
 </openbox_menu>

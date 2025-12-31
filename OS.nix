@@ -127,6 +127,9 @@
     ];
   };
 
+  # Active slock avec le wrapper setuid nécessaire (corrige l'erreur OOM killer)
+  programs.slock.enable = true;
+
   # Agent GnuPG
   programs.gnupg.agent = {
     enable = true;
