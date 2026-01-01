@@ -71,6 +71,7 @@ in {
     yubico-piv-tool
     pcsc-tools
     opensc
+          <prompt>yes</prompt>
     */
     
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -345,7 +346,7 @@ extensions.packages = [
       # We explictly put nvim instead of using the 'e' alias
       # since the 'e' alias could theorically not support
       # the vim syntax used here if 'e' is not a vim like editor.
-      config="nvim -p /etc/nixos/OS.nix /etc/nixos/gustav.nix -c \"tabnext 2\"";
+      config="nvim -p /etc/nixos/OS.nix /etc/nixos/gustav.nix /etc/nixos/modules/network.nix -c \"tabnext 2\"";
       cnf="config";
 
       infos = "printf '\n**HEURE & DATE**:\n' && date && 
@@ -492,12 +493,14 @@ extensions.packages = [
     <item label="Redémarrer">
         <action name="Execute">
             <command>systemctl reboot</command>
+            <prompt>Êtes-vous certain de vouloir redémarrer l'ordinateur ?</prompt>
         </action>
     </item>
 
     <item label="Éteindre">
         <action name="Execute">
             <command>systemctl poweroff</command>
+            <prompt>Êtes-vous certain de vouloir éteindre l'ordinateur ?</prompt>
         </action>
     </item>
     </menu>

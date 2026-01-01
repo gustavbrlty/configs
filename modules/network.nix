@@ -46,6 +46,12 @@ in {
   # On désactive wpa_supplicant pour éviter les conflits
   networking.wireless.enable = false;
 
+  # Pour que NetworkManager puisse envoyer des DNS à resolved.
+  networking.networkmanager.dns = "systemd-resolved";
+
+  # Active systemd-resolved pour une gestion DNS moderne (Split-DNS)
+  services.resolved.enable = true;
+
   # On fusionne (//) les résultats de la fonction pour chaque réseau.
   sops.templates = 
     # 1. Réseaux personnels (WPA-PSK) via la fonction
@@ -75,8 +81,9 @@ in {
           [802-1x]
           eap=peap;
           identity=gustav.berloty@epita.fr
-          phase2-auth=mschapv2;
+          phase2-auth=mschapv2
           password=${config.sops.placeholder.espace_perso_EPITA}
+          # system-ca-certs=false # Si jamais le certificat de l'ecole devient auto-signe ou prive, il faudra decommente cette ligne.
         '';
       };
     };

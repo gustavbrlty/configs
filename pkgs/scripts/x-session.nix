@@ -12,6 +12,7 @@ let
       openbox 
       bash
       coreutils
+      xautolock
     ];
 
     text = ''
@@ -50,6 +51,9 @@ let
       if [ -x "/run/current-system/sw/libexec/dconf-service" ]; then
         "/run/current-system/sw/libexec/dconf-service" &
       fi
+
+      # Verouiller automatiquement l'ordinateur en cas d'inactivite.
+      xautolock -time 5 -locker slock &
 
       # 3. Lancement de l'application optionnelle
       # Note: On utilise ''$ pour échapper le dollar pour Nix
