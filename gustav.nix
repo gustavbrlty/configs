@@ -1,4 +1,3 @@
-
 { config, pkgs, pkgs-unstable, ... }:
 
 let
@@ -48,6 +47,7 @@ in {
     # obconf not that useful.
     pkgs.libinput-gestures
     pkgs.sops
+    pkgs.typst
 
     # pkgs-unstable.bitwarden-cli
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
@@ -196,6 +196,24 @@ extensions.packages = [
           install -v -m644 "$src" "$dst/$addonId.xpi"
         '';
       })
+
+      (pkgs.stdenv.mkDerivation {
+        name = "zotero";
+        src = pkgs.fetchurl {
+          # L'extension ne se trouve pas sur le store mozilla.
+          url = "https://www.zotero.org/download/connector/dl?browser=firefox";
+          sha256 = "sha256-jQLtVkFeRDZ8IiVGRKFcJ5b6AncXHnLuM5TS8vaAiQY=";
+        };
+
+        # ID officiel de l'extension Zotero
+        addonId = "zotero@chnm.gmu.edu";
+        
+        buildCommand = ''
+          dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+          mkdir -p "$dst"
+          install -v -m644 "$src" "$dst/$addonId.xpi"
+        '';
+      })
     ];
 
 };
@@ -229,20 +247,20 @@ extensions.packages = [
     "github-kylak" = {
       hostname = "github.com";
       user = "git";
-      # identityFile = "~/.ssh/kylak_ssh";
-      # identitiesOnly = true;
+      identityFile = "/etc/nixos/.config/ssh/kylak_ssh";
+      identitiesOnly = true;
     };
     "github-gustavbrlty" = {
       hostname = "github.com";
       user = "git";
-      # identityFile = "~/.ssh/id_rsa";
-      # identitiesOnly = true;
+      identityFile = "/etc/nixos/.config/ssh/id_rsa";
+      identitiesOnly = true;
     };
     "c" = {
       hostname = "c";
       user = "git";
-      # identityFile = "~/.ssh/id_rsa";
-      # identitiesOnly = true;
+      identityFile = "/etc/nixos/.config/ssh/id_rsa";
+      identitiesOnly = true;
     };
   };
 
@@ -443,9 +461,9 @@ extensions.packages = [
       </action>
     </item>
     <separator/>
-      <item label="Screenshot">
+      <item label="Zotero">
         <action name="Execute">
-          <command>${pkgs.flameshot}/bin/flameshot gui</command>
+          <command>${pkgs.zotero}/bin/zotero</command>
         </action>
       </item>
     <separator/>
@@ -455,6 +473,11 @@ extensions.packages = [
         </action>
       </item>
     <separator/>
+      <item label="Screenshot">
+        <action name="Execute">
+          <command>${pkgs.flameshot}/bin/flameshot gui</command>
+        </action>
+      </item>
     
     <!-- <menu id="multimedia-menu" label="Other">
       <item label="VLC">
@@ -566,6 +589,16 @@ extensions.packages = [
       </application>
       <application class="Qemu-system-x86_64">
         <decor>no</decor>
+      </application>
+      <application class="Gnome-terminal">
+        <size>
+          <width>1200</width>
+          <height>700</height>
+        </size>
+        <position force="yes">
+          <x>center</x>
+          <y>center</y>
+        </position>
       </application>
     </applications>
 

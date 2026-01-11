@@ -83,8 +83,8 @@ pkgs.writers.writeRustBin "sys-update" {} ''
             }
         });
 
-        // Boucle de 7 secondes
-        for i in (1..=7).rev() {
+        // Boucle de 60 secondes
+        for i in (1..=60).rev() {
             // \r ramène le curseur au début de la ligne, print! écrase le texte
             print!("\rAppliquer ces changements ? [O/n] (Validation auto dans {}s) ", i);
             io::stdout().flush().unwrap();
@@ -107,7 +107,7 @@ pkgs.writers.writeRustBin "sys-update" {} ''
             }
         }
 
-        // Si on sort de la boucle, c'est que les 7 secondes sont passées
+        // Si on sort de la boucle, c'est que les 60 secondes sont passées
         println!("\n[Timer] Validation automatique.");
         return true;
     }

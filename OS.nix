@@ -32,6 +32,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Pour pouvoir monter facilement certains disques durs externes
+  boot.supportedFilesystems = [ "apfs" ];
+
   systemd.tmpfiles.rules = [
     "d /etc/nixos 0775 gustav users -"
   ];

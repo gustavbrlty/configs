@@ -50,8 +50,7 @@ mkNixPak {
         (sloth.concat' sloth.homeDir "/.cursor-server")
         
         # Vos dossiers
-        (sloth.concat' sloth.homeDir "/Projets") 
-        (sloth.concat' sloth.homeDir "/Téléchargements")
+        (sloth.concat' sloth.homeDir "/cursor") 
       ];
     };
   };
