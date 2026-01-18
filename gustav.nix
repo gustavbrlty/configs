@@ -320,6 +320,17 @@ extensions.packages = [
       gs = "git switch";
       gd = "git diff";
       gb = "git branch -a";
+
+      #"?" = "pijul status";
+      pi = "pijul";
+      pa = "pijul add";
+      pr = "pijul record";
+      pp = "pijul push";
+      pl = "pijul log";
+      pcs = "pijul channel switch";
+      pd = "pijul diff";
+      pc = "pijul channel";
+      
       
       # Cargo
       cr="cargo run";
