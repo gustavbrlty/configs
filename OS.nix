@@ -10,6 +10,7 @@
       hardware/common.nix
       hardware/pc_HP.nix
       modules/network.nix
+      modules/virtualization.nix
       modules/password_manager.nix
       inputs.home-manager.nixosModules.default
     ];

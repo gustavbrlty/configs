@@ -1,7 +1,43 @@
 { config, pkgs, ... }:
 {
+
+  # PODMAN
+  virtualisation.podman = {
+    enable = true;
+
+    # Optionnel : permet d'utiliser `docker` comme alias pour `podman`
+    dockerCompat = true; 
+
+    # Optionnel : active les mises à jour DNS automatiques pour les conteneurs
+    defaultNetwork.settings.dns_enabled = true;
+  };
+
+  # Pour ne pas avoir l'erreur:
+  # Error: OCI runtime error: crun: sd-bus call: Process org.freedesktop.systemd1 exited with status 1: Input/output. 
+  virtualisation.containers.containersConf.settings = {
+    engine = {
+      cgroup_manager = "cgroupfs";
+    };
+  };
+
+  # VIRT-MANAGER 
+  # Active dconf au niveau système
+  programs.dconf.enable = true;
+
+  # Injecte la config virt-manager pour les sessions utilisateurs
+  programs.dconf.profiles.user.databases = [
+    {
+      settings = {
+        "org/virt-manager/virt-manager/connections" = {
+          autoconnect = ["qemu:///system"];
+          uris = ["qemu:///system"];
+        };
+      };
+    }
+  ];
  
-  home.packages = with pkgs; [
+ # QEMU
+  environment.systemPackages = with pkgs; [
 
     qemu
     virt-manager
@@ -89,11 +125,4 @@
           "$@"
     '')
   ];
-
-  dconf.settings = {
-    "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
-    };
-  };
 }

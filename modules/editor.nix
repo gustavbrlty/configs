@@ -7,10 +7,10 @@ let
   cfg = config.programs.editor;
 
   # Liste des dépendances pour NvChad.
-  nvchadDependencies = with pkgs; [
+  nvchadDependencies = with pkgs-unstable; [
 
     neovim
-    git
+    # git # on a dit de prendre la version pkgs stable dans gustav.nix
     gcc           # Requis par Treesitter.
     gnumake
     unzip

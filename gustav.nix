@@ -16,15 +16,14 @@ in {
 
   # We want the user to be able to use qemu.
   imports = [
-    modules/virtualization.nix
     modules/editor.nix
+    pkgs/pijul.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "gustav";
   home.homeDirectory = "/home/gustav";
-
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -497,9 +496,9 @@ extensions.packages = [
       <item label="Reconfigure Openbox">
         <action name="Reconfigure"/>
       </item>
-      <item label="Restart Openbox">
+      <!-- <item label="Restart Openbox">
         <action name="Restart"/>
-      </item>
+      </item> -->
       <separator/>
       <item label="Log out from X">
         <action name="Exit">
