@@ -246,19 +246,19 @@ extensions.packages = [
     "github-kylak" = {
       hostname = "github.com";
       user = "git";
-      identityFile = "/etc/nixos/.config/ssh/kylak_ssh";
+      identityFile = "/etc/nixos/.config/ssh/kylak_ssh.pub";
       identitiesOnly = true;
     };
     "github-gustavbrlty" = {
       hostname = "github.com";
       user = "git";
-      identityFile = "/etc/nixos/.config/ssh/id_rsa";
+      identityFile = "/etc/nixos/.config/ssh/id_rsa.pub";
       identitiesOnly = true;
     };
     "c" = {
       hostname = "c";
       user = "git";
-      identityFile = "/etc/nixos/.config/ssh/id_rsa";
+      identityFile = "/etc/nixos/.config/ssh/id_rsa.pub";
       identitiesOnly = true;
     };
   };
