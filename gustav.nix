@@ -54,6 +54,8 @@ in {
     # je l'ai trouve mieux que vlc
     pkgs.mpv
 
+    pkgs.qview # pour les images.
+
     # pkgs-unstable.bitwarden-cli
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
     # pkgs.polkit_gnome # pour le debloquage par biometrie.
@@ -107,6 +109,13 @@ in {
       "video/x-flv" = "mpv.desktop";
       "video/mpeg" = "mpv.desktop";
       "video/ogg" = "mpv.desktop";
+      "image/jpeg" = "qview.desktop";
+      "image/png"  = "qview.desktop";
+      "image/gif"  = "qview.desktop";
+      "image/webp" = "qview.desktop";
+      "image/bmp"  = "qview.desktop";
+      "image/tiff" = "qview.desktop";
+      "image/svg+xml" = "qview.desktop";
     };
   };
 
