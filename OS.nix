@@ -28,6 +28,21 @@
   sops.secrets.Flandrin = { };
   sops.secrets.Blonville = { };
   sops.secrets.espace_perso_EPITA = { };
+
+  # ==========================================
+  # 3. Configuration WebDAV (Davfs2) 
+  # ==========================================
+  sops.secrets.webdav = {
+    owner = "root";    # Root doit posséder le fichier pour le montage système
+    group = "root";
+    mode = "0600"; 
+  };
+
+  services.davfs2.enable = true;
+
+  # On lie le fichier de secrets attendu par davfs2 vers le fichier déchiffré par SOPS.
+  environment.etc."davfs2/secrets".source = config.sops.secrets.webdav.path;
+  # ==========================================
   
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -108,6 +123,7 @@
       "pipewire"
       "lp"
       "scanner"
+      "davfs2"
     ];
   };
 

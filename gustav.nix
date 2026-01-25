@@ -48,6 +48,12 @@ in {
     pkgs.sops
     pkgs.typst
 
+    pkgs.zotero
+
+    # lecteur video, j'ai teste, et 
+    # je l'ai trouve mieux que vlc
+    pkgs.mpv
+
     # pkgs-unstable.bitwarden-cli
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
     # pkgs.polkit_gnome # pour le debloquage par biometrie.
@@ -55,8 +61,6 @@ in {
     # Ajoutez ces deux lignes :
     pkgs.arandr      # Interface graphique pour gérer les écrans (HDMI)
     pkgs.autorandr   # (Optionnel) Pour sauvegarder/restaurer les profils
-
-    pkgs.zotero
 
     my-x-scripts
     sys-update # Pour maj le systeme proprement.
@@ -89,6 +93,22 @@ in {
     pkgs.flameshot # To be able to take screenshots.
   
   ];
+
+  # On met mpv en application par default
+  # pour lire les videos.
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "video/mp4" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop"; # .mkv
+      "video/webm" = "mpv.desktop";
+      "video/quicktime" = "mpv.desktop";  # .mov
+      "video/x-msvideo" = "mpv.desktop";  # .avi
+      "video/x-flv" = "mpv.desktop";
+      "video/mpeg" = "mpv.desktop";
+      "video/ogg" = "mpv.desktop";
+    };
+  };
 
   # Mes configs.
   systemd.user.tmpfiles.rules = [
@@ -302,7 +322,7 @@ extensions.packages = [
       # Navigation
       ll = "ls -alhF";
       la = "ls -Ah";
-      l = "ll";
+      l = "ls -l";
       c = "cd";
       "c.." = "cd ..";
       clear = "clear_n_bottom";

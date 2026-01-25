@@ -4,10 +4,7 @@ let
   # --- Variables pour la configuration du Cloud ---
   user = "gustav";
   mountPoint = "/mnt/keepass";
-  davUrl = "https://c.tail4868dc.ts.net:8443/"; # The password manager cloud URL.
-  
-  # Chemin vers votre fichier de secrets SOPS
-  secretsFile = ../secrets.yaml;
+  davUrl = "https://c.tail4868dc.ts.net:8443/keepass/"; # The password manager cloud URL.
 
 in {
   # ==========================================
@@ -36,31 +33,6 @@ in {
       fi
     '';
   };
-
-  # ==========================================
-  # Configuration Cloud :
-
-  # ==========================================
-  # 2. Gestion du secret pour s'authentifier sur le Cloud.
-  # ==========================================
-  sops.secrets.keepass_dav_creds = {
-    sopsFile = secretsFile;
-    format = "yaml";
-    owner = "root";    # Root doit posséder le fichier pour le montage système
-    group = "root";
-    mode = "0600"; 
-  };
-
-  # ==========================================
-  # 3. Configuration WebDAV (Davfs2) 
-  # ==========================================
-  services.davfs2.enable = true;
-
-  # On lie le fichier de secrets attendu par davfs2 vers le fichier déchiffré par SOPS.
-  environment.etc."davfs2/secrets".source = config.sops.secrets.keepass_dav_creds.path;
-
-  # On donne le droit à l'utilisateur de monter/utiliser davfs si besoin
-  users.users.${user}.extraGroups = [ "davfs2" ];
 
   # ==========================================
   # 4. Montage du disque (pour le WebDAV)
