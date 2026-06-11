@@ -40,8 +40,8 @@ in {
     # it was tricky to try x11docker.
 
     # To be able to use GUI.
-    pkgs.xorg.xinit
-    pkgs.xorg.twm
+    pkgs.xinit
+    pkgs.tab-window-manager
     pkgs.openbox # Windows manager.
     # obconf not that useful.
     pkgs.libinput-gestures
@@ -72,6 +72,7 @@ in {
     pkgs.libreoffice-fresh
 
     pkgs-unstable.llama-cpp
+    pkgs-unstable.opencode
 
     pkgs.monero-gui
     pkgs.eigenwallet
@@ -102,7 +103,7 @@ in {
     pkgs.flameshot # To be able to take screenshots.
 
     # mistral-vibe
-    inputs.mistral-vibe.packages.${pkgs.system}.default
+    inputs.mistral-vibe.packages.${pkgs.stdenv.hostPlatform.system}.default
   
   ];
 
@@ -167,6 +168,11 @@ in {
   # Cela permet de déverrouiller l'extension Firefox avec la biométrie/PIN de l'appli Desktop
   programs.firefox = {
     enable = true;
+
+    # Conserve l'emplacement historique du profil (~/.mozilla/firefox).
+    # En 26.05 le défaut est passé au chemin XDG ($XDG_CONFIG_HOME/mozilla/firefox).
+    # On fige explicitement le legacy pour éviter tout déplacement de profil.
+    configPath = ".mozilla/firefox";
     
     # C'est cette ligne magique qui fait le lien
     # entre Firefox et Bitwarden. 
@@ -288,24 +294,24 @@ in {
 
   programs.ssh.enable = true;
   programs.ssh.enableDefaultConfig = false;
-  programs.ssh.matchBlocks = {
+  programs.ssh.settings = {
     "github-kylak" = {
-      hostname = "github.com";
-      user = "git";
-      identityFile = "/etc/nixos/.config/ssh/kylak_ssh.pub";
-      identitiesOnly = true;
+      HostName = "github.com";
+      User = "git";
+      IdentityFile = "/etc/nixos/.config/ssh/kylak_ssh.pub";
+      IdentitiesOnly = true;
     };
     "github-gustavbrlty" = {
-      hostname = "github.com";
-      user = "git";
-      identityFile = "/etc/nixos/.config/ssh/id_rsa.pub";
-      identitiesOnly = true;
+      HostName = "github.com";
+      User = "git";
+      IdentityFile = "/etc/nixos/.config/ssh/id_rsa.pub";
+      IdentitiesOnly = true;
     };
     "c" = {
-      hostname = "c";
-      user = "git";
-      identityFile = "/etc/nixos/.config/ssh/id_rsa.pub";
-      identitiesOnly = true;
+      HostName = "c";
+      User = "git";
+      IdentityFile = "/etc/nixos/.config/ssh/id_rsa.pub";
+      IdentitiesOnly = true;
     };
   };
 

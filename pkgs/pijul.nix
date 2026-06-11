@@ -45,7 +45,7 @@ in
         openssl
         libsodium
         zstd
-        xxHash
+        xxhash
         dbus
       ] ++ lib.optionals pkgs.stdenv.isDarwin [
         pkgs.darwin.apple_sdk.frameworks.Security

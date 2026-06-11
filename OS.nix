@@ -83,7 +83,7 @@
       users = [ "gustav" ];
       commands = [
         {
-          command = "${pkgs.xorg.xinit}/bin/xinit";
+          command = "${pkgs.xinit}/bin/xinit";
           options = [ "NOPASSWD" ];
         }
       ];

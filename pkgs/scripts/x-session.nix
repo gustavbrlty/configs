@@ -80,7 +80,7 @@ pkgs.writeShellApplication {
   name = "start-my-x";
   
   runtimeInputs = with pkgs; [ 
-    xorg.xinit 
+    xinit 
     my-x-session 
     dbus 
   ];
