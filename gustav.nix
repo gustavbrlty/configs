@@ -407,6 +407,7 @@ in {
       music = "musique";
       m = "man";
       e="nvim";
+      oc="opencode";
 
       # If we want to check what 
       # is inside the .bashrc.

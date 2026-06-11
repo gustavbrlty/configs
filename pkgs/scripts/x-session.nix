@@ -96,7 +96,13 @@ pkgs.writeShellApplication {
         fi
     fi
 
-    # Lancement via xinit AVEC dbus-run-session
-    sudo xinit /usr/bin/env bash -c "su $USER -c 'dbus-run-session ${my-x-session}/bin/my-x-session \"$APP_PATH\"'" -- :0 vt1
+    # On redirige toute la sortie (de ce script, de xinit et du serveur X)
+    # vers un fichier de log pour ne rien afficher sur la console (tty1).
+    exec > /tmp/startx.log 2>&1
+
+    # Lancement via xinit AVEC dbus-run-session.
+    # `-keeptty` évite que X ne s'empare du tty et y écrive ses messages.
+    # `vt1` garde la session sur le premier terminal virtuel.
+    sudo xinit /usr/bin/env bash -c "su $USER -c 'dbus-run-session ${my-x-session}/bin/my-x-session \"$APP_PATH\"'" -- :0 vt1 -keeptty -nolisten tcp
   '';
 }
