@@ -48,6 +48,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Utilise le prompt LUKS classique (script bash) au lieu de l'initrd
+  # systemd, qui affiche les caractères tapés / des astérisques lors du
+  # déchiffrement et oblige à appuyer sur Tab pour les masquer.
+  # Avec l'initrd classique, aucun caractère n'est affiché par défaut.
+  boot.initrd.systemd.enable = false;
+
   # Pour pouvoir monter facilement certains disques durs externes
   boot.supportedFilesystems = [ "apfs" ];
 
