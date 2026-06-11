@@ -45,9 +45,6 @@ in {
 
   networking.networkmanager.enable = true;
 
-  # On désactive wpa_supplicant pour éviter les conflits
-  networking.wireless.enable = false;
-
   # Pour que NetworkManager puisse envoyer des DNS à resolved.
   networking.networkmanager.dns = "systemd-resolved";
 
@@ -59,7 +56,7 @@ in {
     # 1. Réseaux personnels (WPA-PSK) via la fonction
     (mkWifi "Partage de connexion" "Ani ben Hashem" config.sops.placeholder.partage_de_connexion 1) //
     (mkWifi "V.Sardou"             "Livebox-DA90"   config.sops.placeholder."V.Sardou"           0) //
-    (mkWifi "Flandrin"             "Bbox-E2EA0B39"  config.sops.placeholder.Flandrin             0) //
+    (mkWifi "Flandrin"             "Bbox-7E26F9C4"  config.sops.placeholder.Flandrin             0) //
     (mkWifi "Blonville"            "Karin"          config.sops.placeholder.Blonville            0) //
 
     # 2. Réseau EPITA (WPA-EAP) - Trop spécifique pour la fonction générique, on le laisse en manuel
@@ -111,5 +108,7 @@ in {
 
     "BPI Bercy Lumiere (1)"  = free_wifi "WIFI-BPI"; 
     # "BPI Bercy Lumiere (2)"  = free_wifi1 "Lumiere_Visiteurs"; n'a pas marche (le 16/12). 
+
+    "La Permanence" = free_wifi "La Permanence";
   };
 }

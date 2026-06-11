@@ -71,6 +71,8 @@ in {
 
     pkgs.libreoffice-fresh
 
+    pkgs-unstable.llama-cpp
+
     pkgs.monero-gui
     pkgs.eigenwallet
 
@@ -173,93 +175,93 @@ in {
     ];
 
     profiles.gustav = {
-  isDefault = true;
 
-  settings = {
-    "toolkit.legacyUserProfileCustomizations.stylesheets" = true; 
-    "browser.startup.homepage" = "about:blank";
-    "browser.newtabpage.enabled" = false;
-    "sidebar.verticalTabs" = true;
-  };
+      isDefault = true;
 
-  userChrome = ''
-    /* --- PARTIE 1 : MASQUER LES ÉLÉMENTS --- */
-    
-    /* Cache Firefox View ("View recent browsing") */
-    #firefox-view-button { display: none !important; }
+      settings = {
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true; 
+        "browser.startup.homepage" = "about:blank";
+        "browser.newtabpage.enabled" = false;
+        "sidebar.verticalTabs" = true;
+      };
 
-    /* Cache le bouton de Profil */
-    #fxa-toolbar-menu-button { display: none !important; }
-
-    /* Cache le "Nouvel onglet" (+) */
-    #tabs-newtab-button, #new-tab-button, .tabs-newtab-button { display: none !important; }
-
-    /* Cache le bouton "Show Sidebar" */
-    #sidebar-button { display: none !important; }
-
-
-    /* --- PARTIE 2 : RÉORDONNER LES ICÔNES (Extensions vs Onglets) --- */
-
-    /* On cible le conteneur principal de la barre d'outils */
-    #nav-bar-customization-target {
-        display: flex !important;
-    }
-
-    /* 1. On place l'icône "Lister tous les onglets" (le V) en premier */
-    #alltabs-button {
-        order: 1 !important;
-    }
-
-    /* 2. On place l'icône "Extensions" (le Puzzle) après */
-    #unified-extensions-button {
-        order: 2 !important;
-    }
-
-    /* 3. On force le menu principal (Hamburger) à rester tout à la fin */
-    #PanelUI-button {
-        order: 3 !important;
-    }
-  '';
-
-extensions.packages = [
-      (pkgs.stdenv.mkDerivation {
-        name = "keepassxc-browser";
-        src = pkgs.fetchurl {
-          # URL de la version 1.9.11 (vérifiez si une version plus récente existe)
-          url = "https://addons.mozilla.org/firefox/downloads/file/4628286/keepassxc_browser-1.9.11.xpi";
-          # Le hash doit être correct. Si Nix râle, il vous donnera le bon hash à copier-coller.
-          sha256 = "sha256-vuUjrI2WjTauOuMXsSsbK76F4sb1ud2w+4IsLZCvYTk=";
-        };
-        # L'ID est crucial pour que Firefox reconnaisse l'extension
-        addonId = "keepassxc-browser@keepassxc.org";
+      userChrome = ''
+        /* --- PARTIE 1 : MASQUER LES ÉLÉMENTS --- */
         
-        buildCommand = ''
-          dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-          mkdir -p "$dst"
-          install -v -m644 "$src" "$dst/$addonId.xpi"
-        '';
-      })
+        /* Cache Firefox View ("View recent browsing") */
+        #firefox-view-button { display: none !important; }
 
-      (pkgs.stdenv.mkDerivation {
-        name = "zotero";
-        src = pkgs.fetchurl {
-          # L'extension ne se trouve pas sur le store mozilla.
-          url = "https://www.zotero.org/download/connector/dl?browser=firefox";
-          sha256 = "sha256-jQLtVkFeRDZ8IiVGRKFcJ5b6AncXHnLuM5TS8vaAiQY=";
-        };
+        /* Cache le bouton de Profil */
+        #fxa-toolbar-menu-button { display: none !important; }
 
-        # ID officiel de l'extension Zotero
-        addonId = "zotero@chnm.gmu.edu";
-        
-        buildCommand = ''
-          dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-          mkdir -p "$dst"
-          install -v -m644 "$src" "$dst/$addonId.xpi"
-        '';
-      })
-    ];
+        /* Cache le "Nouvel onglet" (+) */
+        #tabs-newtab-button, #new-tab-button, .tabs-newtab-button { display: none !important; }
 
-};
+        /* Cache le bouton "Show Sidebar" */
+        #sidebar-button { display: none !important; }
+
+
+        /* --- PARTIE 2 : RÉORDONNER LES ICÔNES (Extensions vs Onglets) --- */
+
+        /* On cible le conteneur principal de la barre d'outils */
+        #nav-bar-customization-target {
+            display: flex !important;
+        }
+
+        /* 1. On place l'icône "Lister tous les onglets" (le V) en premier */
+        #alltabs-button {
+            order: 1 !important;
+        }
+
+        /* 2. On place l'icône "Extensions" (le Puzzle) après */
+        #unified-extensions-button {
+            order: 2 !important;
+        }
+
+        /* 3. On force le menu principal (Hamburger) à rester tout à la fin */
+        #PanelUI-button {
+            order: 3 !important;
+        }
+      '';
+
+      extensions.packages = [
+        (pkgs.stdenv.mkDerivation {
+          name = "keepassxc-browser";
+          src = pkgs.fetchurl {
+            # URL de la version 1.9.11 (vérifiez si une version plus récente existe)
+            url = "https://addons.mozilla.org/firefox/downloads/file/4628286/keepassxc_browser-1.9.11.xpi";
+            # Le hash doit être correct. Si Nix râle, il vous donnera le bon hash à copier-coller.
+            sha256 = "sha256-vuUjrI2WjTauOuMXsSsbK76F4sb1ud2w+4IsLZCvYTk=";
+          };
+          # L'ID est crucial pour que Firefox reconnaisse l'extension
+          addonId = "keepassxc-browser@keepassxc.org";
+          
+          buildCommand = ''
+            dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+            mkdir -p "$dst"
+            install -v -m644 "$src" "$dst/$addonId.xpi"
+          '';
+        })
+
+        (pkgs.stdenv.mkDerivation {
+          name = "zotero";
+          src = pkgs.fetchurl {
+            # L'extension ne se trouve pas sur le store mozilla.
+            url = "https://www.zotero.org/download/connector/dl?browser=firefox";
+            sha256 = "sha256-jQLtVkFeRDZ8IiVGRKFcJ5b6AncXHnLuM5TS8vaAiQY=";
+          };
+
+          # ID officiel de l'extension Zotero
+          addonId = "zotero@chnm.gmu.edu";
+          
+          buildCommand = ''
+            dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+            mkdir -p "$dst"
+            install -v -m644 "$src" "$dst/$addonId.xpi"
+          '';
+        })
+      ];
+    };
 
   };
 
