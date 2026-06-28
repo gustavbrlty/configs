@@ -205,14 +205,25 @@ ${inputsRust}
                 run_command_interactive("sudo", &["nix", "flake", "update", "nixpkgs"]);
             },
             "all" => {
+                // On met à jour explicitement chaque input connu, au lieu de
+                // 'nix flake update' sans argument dont le comportement peut
+                // laisser certains inputs déjà présents inchangés.
                 println!("== 1/4 Mise à jour de toutes les sources ==");
-                run_command_interactive("sudo", &["nix", "flake", "update"]);
+                let mut cmd_args: Vec<&str> = vec!["nix", "flake", "update"];
+                for (key, _) in selectable_inputs() {
+                    cmd_args.push(key);
+                }
+                run_command_interactive("sudo", &cmd_args);
             },
             "select" => {
                 let selected = select_inputs_menu();
                 if selected.is_empty() {
                     println!("\n== 1/4 Mise à jour de toutes les sources ==");
-                    run_command_interactive("sudo", &["nix", "flake", "update"]);
+                    let mut cmd_args: Vec<&str> = vec!["nix", "flake", "update"];
+                    for (key, _) in selectable_inputs() {
+                        cmd_args.push(key);
+                    }
+                    run_command_interactive("sudo", &cmd_args);
                 } else {
                     println!("\n== 1/4 Mise à jour des paquets sélectionnés ==");
                     let mut cmd_args: Vec<&str> = vec!["nix", "flake", "update"];
