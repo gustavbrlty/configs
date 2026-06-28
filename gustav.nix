@@ -104,10 +104,6 @@ in {
     # '')
 
     pkgs.flameshot # To be able to take screenshots.
-
-    # mistral-vibe
-    inputs.mistral-vibe.packages.${pkgs.stdenv.hostPlatform.system}.default
-  
   ];
 
   # On met mpv en application par default

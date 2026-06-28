@@ -34,9 +34,6 @@
     pin-cursor.url    = "github:nixos/nixpkgs/nixos-unstable";
     pin-neovim.url    = "github:nixos/nixpkgs/nixos-unstable";
 
-    mistral-vibe.url = "github:mistralai/mistral-vibe";
-    mistral-vibe.inputs.nixpkgs.follows = "nixpkgs";
-    
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -106,7 +103,6 @@
       { key = "home-manager";  desc = "home-manager"; }
       { key = "nixpak";        desc = "nixpak"; }
       { key = "sops-nix";      desc = "sops-nix"; }
-      { key = "mistral-vibe";  desc = "mistral-vibe"; }
     ];
 
     # Liste finale (clé, desc) injectée dans le menu de sys-update.
