@@ -1,9 +1,10 @@
-{ inputs, config, pkgs, pkgs-unstable, ... }:
+{ inputs, config, pkgs, pkgs-unstable, pinnedPkgs, sys-update, ... }:
 
 let
 
   my-x-scripts = import pkgs/scripts/x-session.nix { inherit pkgs; };
-  sys-update = import pkgs/scripts/sys-update.nix { inherit pkgs; };
+  # sys-update est désormais fourni par le flake (avec la liste des inputs
+  # générée automatiquement depuis pinnedSpecs).
 
   configs = "/etc/nixos/.config";
 
@@ -52,11 +53,13 @@ in {
     pkgs.zotero
     pkgs.tigervnc
 
-    # lecteur video, j'ai teste, et 
+    # Pour du multimedia:
+    # mpv: lecteur video, j'ai teste, et 
     # je l'ai trouve mieux que vlc
     pkgs.mpv
-
     pkgs.qview # pour les images.
+    pkgs.imagemagick # pour convertir des images (en pdf par exemple)
+    pkgs.pdftk # pour fusionner, couper, extraire, reordonner, etc. des pdf
 
     # pkgs-unstable.bitwarden-cli
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
@@ -71,8 +74,8 @@ in {
 
     pkgs.libreoffice-fresh
 
-    pkgs-unstable.llama-cpp
-    pkgs-unstable.opencode
+    pinnedPkgs.llama-cpp
+    pinnedPkgs.opencode
 
     pkgs.monero-gui
     pkgs.eigenwallet
@@ -254,7 +257,7 @@ in {
           src = pkgs.fetchurl {
             # L'extension ne se trouve pas sur le store mozilla.
             url = "https://www.zotero.org/download/connector/dl?browser=firefox";
-            sha256 = "sha256-jQLtVkFeRDZ8IiVGRKFcJ5b6AncXHnLuM5TS8vaAiQY=";
+            sha256 = "sha256-dmGqtHwJTBl+xLY+deJWFWXALvRJ5P6l49owj558E9c=";
           };
 
           # ID officiel de l'extension Zotero

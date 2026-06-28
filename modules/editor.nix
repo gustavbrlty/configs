@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-unstable, lib, inputs, ... }:
+{ config, pkgs, pkgs-unstable, pinnedPkgs, lib, inputs, ... }:
 
 with lib;
 
@@ -7,7 +7,7 @@ let
   cfg = config.programs.editor;
 
   # Liste des dépendances pour NvChad.
-  nvchadDependencies = with pkgs-unstable; [
+  nvchadDependencies = with pinnedPkgs.neovim-pkgs; [
 
     neovim
     # git # on a dit de prendre la version pkgs stable dans gustav.nix
@@ -37,7 +37,7 @@ let
 
   # On importe Cursor sous Bubblewrap (NixPak).
   sandboxed-cursor = import ../pkgs/unfree/cursor.nix {
-    inherit pkgs pkgs-unstable inputs;
+    inherit pkgs pkgs-unstable pinnedPkgs inputs;
   };
 
 in

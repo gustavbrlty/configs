@@ -1,4 +1,15 @@
-{ pkgs }:
+{ pkgs, selectableInputs ? [] }:
+
+let
+  lib = pkgs.lib;
+
+  # Génère les lignes Rust du vec! de selectable_inputs() à partir de la
+  # liste Nix `selectableInputs` (chaque élément : { key, desc }).
+  # Produit par ex. :   ("nixpkgs", "Paquets stables"),
+  inputsRust = lib.concatMapStringsSep "\n"
+    (i: ''            ("${i.key}", "${i.desc}"),'')
+    selectableInputs;
+in
 
 pkgs.writers.writeRustBin "sys-update" {} ''
     use std::env;
@@ -112,14 +123,81 @@ pkgs.writers.writeRustBin "sys-update" {} ''
         return true;
     }
 
+    // Liste des inputs sélectionnables : (clé de l'input flake, description).
+    // CETTE LISTE EST GÉNÉRÉE AUTOMATIQUEMENT depuis `pinnedSpecs` et
+    // `globalInputs` dans flake.nix. Ne pas l'éditer à la main.
+    fn selectable_inputs() -> Vec<(&'static str, &'static str)> {
+        vec![
+${inputsRust}
+        ]
+    }
+
+    // Menu interactif : l'utilisateur tape les numéros des inputs à mettre à jour.
+    // Retourne la liste des clés d'inputs choisies.
+    fn select_inputs_menu() -> Vec<String> {
+        let inputs = selectable_inputs();
+
+        println!("\n== Sélection des paquets/sources à mettre à jour ==\n");
+        for (i, (key, desc)) in inputs.iter().enumerate() {
+            println!("  [{:>2}] {:<14} - {}", i + 1, key, desc);
+        }
+        println!("\n  [ a] Tout mettre à jour");
+        println!("  [ q] Annuler\n");
+        print!("Entrez les numéros séparés par des espaces (ex: 3 5), 'a' ou 'q' : ");
+        io::stdout().flush().unwrap();
+
+        let mut buffer = String::new();
+        io::stdin().read_line(&mut buffer).expect("Lecture échouée");
+        let choice = buffer.trim().to_lowercase();
+
+        if choice == "q" || choice.is_empty() {
+            println!("\n[Annulé] Aucune sélection.");
+            exit(0);
+        }
+
+        if choice == "a" {
+            // Tout : on renvoie un marqueur vide => update global.
+            return vec![];
+        }
+
+        let mut selected: Vec<String> = Vec::new();
+        for token in choice.split_whitespace() {
+            match token.parse::<usize>() {
+                Ok(n) if n >= 1 && n <= inputs.len() => {
+                    let key = inputs[n - 1].0.to_string();
+                    if !selected.contains(&key) {
+                        selected.push(key);
+                    }
+                },
+                _ => {
+                    eprintln!("!! Entrée invalide ignorée : '{}'", token);
+                }
+            }
+        }
+
+        if selected.is_empty() {
+            eprintln!("!! Aucun input valide sélectionné.");
+            exit(1);
+        }
+
+        println!("\n:: Inputs sélectionnés : {}", selected.join(", "));
+        selected
+    }
+
     fn main() {
         let args: Vec<String> = env::args().collect();
         if args.len() < 2 {
-            eprintln!("Usage: sys-update [stable|all]");
+            eprintln!("Usage: sys-update [stable|all|select|<input>...]");
+            eprintln!("  stable        : met à jour seulement nixpkgs (stable)");
+            eprintln!("  all           : met à jour toutes les sources");
+            eprintln!("  select        : menu interactif de sélection des paquets");
+            eprintln!("  <input>...    : met à jour les inputs nommés (ex: pin-opencode)");
             exit(1);
         }
 
         let mode = &args[1];
+
+        require_sudo_rights();
 
         match mode.as_str() {
             "stable" => {
@@ -127,13 +205,42 @@ pkgs.writers.writeRustBin "sys-update" {} ''
                 run_command_interactive("sudo", &["nix", "flake", "update", "nixpkgs"]);
             },
             "all" => {
-                require_sudo_rights();
                 println!("== 1/4 Mise à jour de toutes les sources ==");
                 run_command_interactive("sudo", &["nix", "flake", "update"]);
             },
+            "select" => {
+                let selected = select_inputs_menu();
+                if selected.is_empty() {
+                    println!("\n== 1/4 Mise à jour de toutes les sources ==");
+                    run_command_interactive("sudo", &["nix", "flake", "update"]);
+                } else {
+                    println!("\n== 1/4 Mise à jour des paquets sélectionnés ==");
+                    let mut cmd_args: Vec<&str> = vec!["nix", "flake", "update"];
+                    for key in &selected {
+                        cmd_args.push(key.as_str());
+                    }
+                    run_command_interactive("sudo", &cmd_args);
+                }
+            },
             _ => {
-                eprintln!("Mode inconnu. Utilisez 'stable' ou 'all'.");
-                exit(1);
+                // Mode "inputs nommés" : tous les arguments sont des clés d'inputs.
+                let valid: Vec<&str> = selectable_inputs().iter().map(|(k, _)| *k).collect();
+                let requested: Vec<String> = args[1..].to_vec();
+
+                for key in &requested {
+                    if !valid.contains(&key.as_str()) {
+                        eprintln!("!! Input inconnu : '{}'", key);
+                        eprintln!("   Inputs valides : {}", valid.join(", "));
+                        exit(1);
+                    }
+                }
+
+                println!("== 1/4 Mise à jour de : {} ==", requested.join(", "));
+                let mut cmd_args: Vec<&str> = vec!["nix", "flake", "update"];
+                for key in &requested {
+                    cmd_args.push(key.as_str());
+                }
+                run_command_interactive("sudo", &cmd_args);
             }
         }
 

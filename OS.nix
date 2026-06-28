@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
 
-{ config, pkgs, pkgs-unstable, inputs, ... }:
+{ config, pkgs, pkgs-unstable, pinnedPkgs, inputs, ... }:
 
 {
   imports =
@@ -203,7 +203,7 @@
 
   nixpkgs.overlays = [ # temporary, to use the relative new Mullvad feature.
     (self: super: {
-      tailscale = pkgs-unstable.tailscale;
+      tailscale = pinnedPkgs.tailscale;
     })
   ];
   services.tailscale.enable = true;

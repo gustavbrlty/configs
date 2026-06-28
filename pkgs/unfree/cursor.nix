@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, inputs }:
+{ pkgs, pkgs-unstable, pinnedPkgs, inputs }:
 
 let
   mkNixPak = inputs.nixpak.lib.nixpak {
@@ -9,7 +9,7 @@ in
 mkNixPak {
   config = { sloth, ... }: {
     
-    app.package = pkgs-unstable.code-cursor;
+    app.package = pinnedPkgs.cursor-pkgs.code-cursor;
     flatpak.appId = "com.cursor.Cursor";
     
     # 1. Activation indispensable de DBus (Communication système)
