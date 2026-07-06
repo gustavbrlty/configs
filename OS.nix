@@ -28,6 +28,7 @@
   sops.secrets.Flandrin = { };
   sops.secrets.Blonville = { };
   sops.secrets.espace_perso_EPITA = { };
+  sops.secrets."La Permanence" = { };
 
   # ==========================================
   # 3. Configuration WebDAV (Davfs2) 

@@ -60,6 +60,7 @@ in {
     pkgs.qview # pour les images.
     pkgs.imagemagick # pour convertir des images (en pdf par exemple)
     pkgs.pdftk # pour fusionner, couper, extraire, reordonner, etc. des pdf
+    pkgs.ghostscript # needed for imagemagick
 
     # pkgs-unstable.bitwarden-cli
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
