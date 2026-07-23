@@ -60,6 +60,7 @@ in {
     (mkWifi "Flandrin"             "Bbox-7E26F9C4"  config.sops.placeholder.Flandrin             0) //
     (mkWifi "Blonville"            "Karin"          config.sops.placeholder.Blonville            0) //
     (mkWifi "La Permanence"        "La Permanence"  config.sops.placeholder."La Permanence"      0) //
+    (mkWifi "Grand Riviera Suite"  "SKYbroadbandC3DC"  config.sops.placeholder."Grand Riviera Suite"      0) //
 
     # 2. Réseau EPITA (WPA-EAP) - Trop spécifique pour la fonction générique, on le laisse en manuel
     {
@@ -110,5 +111,13 @@ in {
 
     "BPI Bercy Lumiere (1)"  = free_wifi "WIFI-BPI"; 
     # "BPI Bercy Lumiere (2)"  = free_wifi1 "Lumiere_Visiteurs"; n'a pas marche (le 16/12). 
+
+    "train SNCF"  = free_wifi "_SNCF_WIFI_INOUI"; 
+
+    "compagnie aerienne SAUDIA"  = free_wifi "SAUDIA_OnAir"; 
+
+    "Aeorport Ryad" = free_wifi "KKIA Free Wi-Fi";
+
+    "Starbucks Marikina" = free_wifi "Starbucks Customer";
   };
 }

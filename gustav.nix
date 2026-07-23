@@ -61,6 +61,10 @@ in {
     pkgs.imagemagick # pour convertir des images (en pdf par exemple)
     pkgs.pdftk # pour fusionner, couper, extraire, reordonner, etc. des pdf
     pkgs.ghostscript # needed for imagemagick
+    # pour convertir un pdf en jpg :
+    # magick -density 300 fichier.pdf page.jpg
+    # et un pdf en jpg:
+    # magick image.jpg document.pdf
 
     # pkgs-unstable.bitwarden-cli
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs

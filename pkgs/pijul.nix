@@ -2,7 +2,7 @@
 
 let
   # Définir ici la version désirée (vérifier sur crates.io)
-  pijulVersion = "1.0.0-beta.11";
+  pijulVersion = "1.0.0-beta.15";
 in
 {
   home.packages = [
@@ -14,23 +14,13 @@ in
       src = pkgs.fetchCrate {
         inherit pname version;
         # Laissez ce hash à zéro pour la première erreur (hash de la source tarball)
-        sha256 = "sha256-+rMMqo2LBYlCFQJv8WFCSEJgDUbMi8DnVDKXIWm3tIk=";
+        sha256 = "sha256-yXjqDydoRaldGxG87W5uvUeUfEmzDxis4nGOhGBc+Rs=";
       };
 
       # Laissez ce hash à zéro pour la seconde erreur (hash des dépendances compilées)
-      cargoHash = "sha256-IhArTiReUdj49bA+XseQpOiszK801xX5LdLj8vXD8rs=";
+      cargoHash = "sha256-Zwy7z5ZgAZTVXnbl007ngDs1gJUilVuMlluTVpDjRVs=";
 
       buildFeatures = [ "git" ];
-
-      postPatch = ''
-        # 1. FIX IMPORT : On ajoute l'import manquant tout en haut du fichier (Ligne 1)
-        #    On utilise 'as _' pour éviter les conflits de noms.
-        sed -i '1i use ::sanakirja::RootPageMut as _;' src/commands/git.rs
-
-        # 2. FIX RAND 0.9 : On remplace l'ancien module 'distributions' par 'distr'
-        #    C'est un changement de rupture de la librairie 'rand' v0.9 utilisée par ce projet.
-        sed -i 's/rand::distributions::Alphanumeric/rand::distr::Alphanumeric/g' src/commands/git.rs
-      '';
 
       # --- Dépendances de compilation ---
       nativeBuildInputs = with pkgs; [
