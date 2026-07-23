@@ -1,0 +1,13 @@
+username = "Gus"
+display_name = "Gustav"
+email = "gustavberloty2@gmail.com"
+origin = "nest.pijul.com"
+last_modified = "2026-07-23T17:29:51.659624772Z"
+
+[public_key]
+key = """
+AAAAB3NzaC1yc2EAAAADAQABAAABAQDjFoypNNAplTwdZ0eztqAlbiCHvxIPUyS0tbZvOil4p2pY\r
+4UiUzH/Yt8KhCkMUM4zCHCGAR9MX0ZBLU9bmKf8JJbP5GxYQy4WXB4irb5q87vMiy4xp3fuvV4zI\r
+7/Dvmnaft/47BllXrNYn3PZ8UhI+UCQivtjWZuwVH2+KC5X4VJeDj4UJUeQg6gU/G1JZGsfgKNqb\r
++faDzGATR+vEF0vyoqjiYVJ1uiDD1FT2kKJnweN+zR7kBxaBmG9V1LdT3iihis2VIQ1D1bHfsHBM\r
+OvzwIAqNq/QUjetggIjO+KG4gKCCOBRlSHSuZe0Sfj9zAYiP517LhK7t75skWvLK6Wlf"""

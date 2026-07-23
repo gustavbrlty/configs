@@ -140,6 +140,7 @@ in {
     # Ajouter le terminal.
 
     (link "nvim")
+    (link "pijul")
 
     # Ajouter firefox
 
