@@ -30,7 +30,7 @@ in {
       # Si le fichier n'existe pas, on le met en place
       if [ ! -f "$CONFIG_FILE" ]; then
         mkdir -p "$CONFIG_DIR"
-        cp ${../.config/keepassxc.ini} "$CONFIG_FILE"
+        cp ${../.config/keepassxc/keepassxc.ini} "$CONFIG_FILE"
         chmod 644 "$CONFIG_FILE"
       fi
     '';
