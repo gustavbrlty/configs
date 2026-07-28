@@ -55,12 +55,16 @@ in {
   sops.templates = 
     # 1. Réseaux personnels (WPA-PSK) via la fonction
     # To create a new SOPS placeholder, do it in the OS.nix file. 
+    # To add the password of a network, use the following command in /etc/nixos :
+    # sops --set '["the name of the password"] "yourpassword"' secrets.yaml
+    # If you want to check which password is saved for a specific network it's better to use nmtui rather than sops secrets.yaml.
     (mkWifi "Partage de connexion" "Ani ben Hashem" config.sops.placeholder.partage_de_connexion 1) //
     (mkWifi "V.Sardou"             "Livebox-DA90"   config.sops.placeholder."V.Sardou"           0) //
     (mkWifi "Flandrin"             "Bbox-7E26F9C4"  config.sops.placeholder.Flandrin             0) //
     (mkWifi "Blonville"            "Karin"          config.sops.placeholder.Blonville            0) //
     (mkWifi "La Permanence"        "La Permanence"  config.sops.placeholder."La Permanence"      0) //
     (mkWifi "Grand Riviera Suite"  "SKYbroadbandC3DC"  config.sops.placeholder."Grand Riviera Suite"      0) //
+    (mkWifi "30 Second Coffee Shop - Manille"  "30 SECOND COFFEE"  config.sops.placeholder."30 Second Coffee Shop - Manille"      0) //
 
     # 2. Réseau EPITA (WPA-EAP) - Trop spécifique pour la fonction générique, on le laisse en manuel
     {

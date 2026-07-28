@@ -30,6 +30,7 @@
   sops.secrets.espace_perso_EPITA = { };
   sops.secrets."La Permanence" = { };
   sops.secrets."Grand Riviera Suite" = { };
+  sops.secrets."30 Second Coffee Shop - Manille" = { };
 
   # ==========================================
   # 3. Configuration WebDAV (Davfs2) 
