@@ -19,6 +19,7 @@ in {
   imports = [
     modules/editor.nix
     pkgs/pijul.nix
+    pkgs/freebuff.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -53,6 +54,11 @@ in {
     pkgs.zotero
     pkgs.tigervnc
 
+    # pour creer un partage de connexion plus simplement 
+    # (dans la mesure ou ca permet de recuperer des infos 
+    # plus facilement) depuis cet ordinateur
+    pkgs.iw
+
     # Pour du multimedia:
     # mpv: lecteur video, j'ai teste, et 
     # je l'ai trouve mieux que vlc
@@ -70,9 +76,14 @@ in {
     # pkgs.gnome-keyring # pour bitwarden, pour ne plus avoir d'erreur dans les logs
     # pkgs.polkit_gnome # pour le debloquage par biometrie.
 
-    # Ajoutez ces deux lignes :
+    # gerer les sorties videos
     pkgs.arandr      # Interface graphique pour gérer les écrans (HDMI)
     pkgs.autorandr   # (Optionnel) Pour sauvegarder/restaurer les profils
+
+    # gerer l'audio
+    pkgs.pavucontrol  # Interface graphique de contrôle audio
+    pkgs.pciutils     # Fournit lspci
+    pkgs.pulseaudio  # Pour pavucontrol
 
     my-x-scripts
     sys-update # Pour maj le systeme proprement.
@@ -530,9 +541,14 @@ in {
         </action>
       </item>
       <separator/>
-      <item label="Sortie audiovisuel">
-        <action name="Execute">
+      <item label="Sortie vidéo">
+        <action name="execute">
           <command>${pkgs.arandr}/bin/arandr</command>
+        </action>
+      </item>
+      <item label="Sortie audio">
+        <action name="execute">
+          <command>${pkgs.pavucontrol}/bin/pavucontrol</command>
         </action>
       </item>
       <separator/>
@@ -881,22 +897,22 @@ in {
       </action>
     </keybind>
 
-      <keybind key="C-A-Left">
+      <keybind key="W-C-Left">
         <action name="GoToDesktop"><to>left</to></action>
       </keybind>
-      <keybind key="C-A-Right">
+      <keybind key="W-C-Right">
         <action name="GoToDesktop"><to>right</to></action>
       </keybind>
-      <keybind key="S-A-1">
+      <keybind key="W-C-1">
         <action name="GoToDesktop"><to>1</to></action>
       </keybind>
-      <keybind key="S-A-2">
+      <keybind key="W-C-2">
         <action name="GoToDesktop"><to>2</to></action>
       </keybind>
-      <keybind key="S-A-3">
+      <keybind key="W-C-3">
         <action name="GoToDesktop"><to>3</to></action>
       </keybind>
-      <keybind key="S-A-4">
+      <keybind key="W-C-4">
         <action name="GoToDesktop"><to>4</to></action>
       </keybind>
 
@@ -930,6 +946,35 @@ in {
       <keybind key="W-l"> <!-- l pour lock (verrouiller) -->
         <action name="Execute">
           <command>slock</command>
+        </action>
+      </keybind>
+
+      <!-- Luminosite de l'ecran (touches Fn) -->
+      <keybind key="XF86MonBrightnessUp">
+        <action name="Execute">
+          <command>${pkgs.brightnessctl}/bin/brightnessctl set +5%</command>
+        </action>
+      </keybind>
+      <keybind key="XF86MonBrightnessDown">
+        <action name="Execute">
+          <command>${pkgs.brightnessctl}/bin/brightnessctl set 5%-</command>
+        </action>
+      </keybind>
+
+      <!-- Volume audio (touches Fn) -->
+      <keybind key="XF86AudioRaiseVolume">
+        <action name="Execute">
+          <command>${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+</command>
+        </action>
+      </keybind>
+      <keybind key="XF86AudioLowerVolume">
+        <action name="Execute">
+          <command>${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-</command>
+        </action>
+      </keybind>
+      <keybind key="XF86AudioMute">
+        <action name="Execute">
+          <command>${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle</command>
         </action>
       </keybind>
     </keyboard>

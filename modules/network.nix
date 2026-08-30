@@ -43,10 +43,20 @@ in {
 
   networking.hostName = "pc";
 
-  networking.networkmanager.enable = true;
+  # To change mac address if needed.
+  networking.networkmanager = {
 
-  # Pour que NetworkManager puisse envoyer des DNS à resolved.
-  networking.networkmanager.dns = "systemd-resolved";
+    enable = true;
+
+    # On utilise une nouvelle addresse mac random quand on se connecte a un wifi (deja connu ou non).
+    # Permet d'eviter de devoiler sa veritable addresse mac et de passer au travers desfilres
+    # filres adresse mac si jamais il y a besoin.
+    wifi.macAddress = "random";
+
+    # Pour que NetworkManager puisse envoyer des DNS à resolved.
+    dns = "systemd-resolved";
+  };
+
 
   # Active systemd-resolved pour une gestion DNS moderne (Split-DNS)
   services.resolved.enable = true;

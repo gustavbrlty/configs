@@ -10,6 +10,7 @@
       hardware/common.nix
       hardware/pc_HP.nix
       modules/network.nix
+      modules/AP.nix
       modules/virtualization.nix
       modules/password_manager.nix
       inputs.home-manager.nixosModules.default
@@ -31,6 +32,10 @@
   sops.secrets."La Permanence" = { };
   sops.secrets."Grand Riviera Suite" = { };
   sops.secrets."30 Second Coffee Shop - Manille" = { };
+  sops.secrets."ap-psk" = {
+    mode = "0400";
+    restartUnits = [ "accesspoint.service" ];
+  };
 
   # ==========================================
   # 3. Configuration WebDAV (Davfs2) 
