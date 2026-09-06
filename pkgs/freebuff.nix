@@ -2,7 +2,7 @@
 
 let
   # Vérifier la dernière version sur https://registry.npmjs.org/freebuff/latest
-  freebuffVersion = "0.0.149";
+  freebuffVersion = "0.0.171";
 in
 {
   home.packages = [
@@ -13,7 +13,7 @@ in
       src = pkgs.fetchurl {
         url = "https://codebuff.com/api/releases/download/${freebuffVersion}/freebuff-linux-x64.tar.gz";
         # Laissez ce hash à zéro pour la première erreur (le bon hash sera affiché)
-        sha256 = "sha256-PxHyw7Rx8V29qYI90ftSXWe18WwCk755bz/BUmczyj0=";
+        sha256 = "sha256-1awl+z2EgtEEOiWDxXNsUBjEWqCqNELSuuhNn+hN3Zc=";
       };
 
       sourceRoot = ".";
