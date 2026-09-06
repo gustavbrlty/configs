@@ -25,21 +25,14 @@
     alsa.support32Bit = true;
     pulse.enable = true;
 
-    # Force le profil audio "Speaker" (haut-parleurs internes) au lieu de
-    # "Headphones", et empêche le basculement automatique gênant vers HDMI.
-    wireplumber.extraConfig."51-alc236-speaker" = {
-      "monitor.alsa.rules" = [
-        {
-          matches = [
-            { "device.name" = "alsa_card.pci-0000_00_1f.3-platform-skl_hda_dsp_generic"; }
-          ];
-          actions.update-props = {
-            "device.profile" = "HiFi (HDMI1, HDMI2, HDMI3, Mic1, Mic2, Speaker)";
-            "api.acp.auto-profile" = false;
-          };
-        }
-      ];
-    };
+    # NE PAS forcer de profil ici : cette carte (Realtek ALC236 / SOF) expose
+    # deux profils HiFi exclusifs l'un de l'autre :
+    #   "HiFi (HDMI1, HDMI2, HDMI3, Mic1, Mic2, Speaker)"  (enceintes internes)
+    #   "HiFi (HDMI1, HDMI2, HDMI3, Headphones, Mic1, Mic2)" (prise jack)
+    # L'ancienne règle qui forçait le profil "Speaker" avec auto-profile=false
+    # supprimait complètement la sortie casque. WirePlumber bascule tout seul
+    # entre les deux grâce à la détection du jack (auto-profile/auto-port par
+    # défaut).
   };
 
   # To know the ###BATTERY### level (acpi -b)

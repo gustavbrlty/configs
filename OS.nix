@@ -30,6 +30,7 @@
   sops.secrets.Blonville = { };
   sops.secrets.espace_perso_EPITA = { };
   sops.secrets."La Permanence" = { };
+  sops.secrets."Neutralivie" = { };
   sops.secrets."Grand Riviera Suite" = { };
   sops.secrets."30 Second Coffee Shop - Manille" = { };
   sops.secrets."ap-psk" = {

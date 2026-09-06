@@ -74,7 +74,9 @@ in {
     (mkWifi "Blonville"            "Karin"          config.sops.placeholder.Blonville            0) //
     (mkWifi "La Permanence"        "La Permanence"  config.sops.placeholder."La Permanence"      0) //
     (mkWifi "Grand Riviera Suite"  "SKYbroadbandC3DC"  config.sops.placeholder."Grand Riviera Suite"      0) //
-    (mkWifi "30 Second Coffee Shop - Manille"  "30 SECOND COFFEE"  config.sops.placeholder."30 Second Coffee Shop - Manille"      0) //
+    (mkWifi "30 Second Coffee Shop - Manille"  "30 SECOND COFFEE"  config.sops.placeholder."30 Second Coffee Shop - Manille" 0) //
+    (mkWifi "Neutralivie"          "NEUTRALIVIE-INVITE" config.sops.placeholder.Neutralivie        0) //
+    # Nlife2026
 
     # 2. Réseau EPITA (WPA-EAP) - Trop spécifique pour la fonction générique, on le laisse en manuel
     {

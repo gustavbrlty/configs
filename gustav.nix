@@ -51,8 +51,11 @@ in {
     pkgs.typst
     pkgs.xterm
 
+    pkgs.chromium
+
     pkgs.zotero
     pkgs.tigervnc
+    pkgs.zip
 
     # pour creer un partage de connexion plus simplement 
     # (dans la mesure ou ca permet de recuperer des infos 
@@ -438,7 +441,7 @@ in {
       # Utilitaires
       s="source ~/.bashrc";
       rst="reset";
-      f="find /home/gustav/ -name";
+      f="fd";
       reset="reset && clear";
       x="start-my-x";
       off="sudo shutdown now"; # todo: demander une confirmation
