@@ -69,6 +69,7 @@ in {
     pkgs.qview # pour les images.
     pkgs.imagemagick # pour convertir des images (en pdf par exemple)
     pkgs.pdftk # pour fusionner, couper, extraire, reordonner, etc. des pdf
+    # pour fussionner des pdfs: pdftk fichier1.pdf fichier2.pdf fichier3.pdf cat output resultat.pdf
     pkgs.ghostscript # needed for imagemagick
     # pour convertir un pdf en jpg :
     # magick -density 300 fichier.pdf page.jpg
