@@ -51,8 +51,6 @@ in {
     pkgs.typst
     pkgs.xterm
 
-    pkgs.chromium
-
     pkgs.zotero
     pkgs.tigervnc
     pkgs.zip
